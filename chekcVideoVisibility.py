@@ -14,34 +14,9 @@ driver = webdriver.Firefox(
 wait = WebDriverWait(driver, timeout=60)
 
 
-def login():
-    driver.get(url)
-    # Sign Up Button
-    driver.find_element(
-        by=By.XPATH, value="//*[@id='__layout']/div/header/div/div/div[2]/span[2]").click()
-
-    # Email Input
-    wait.until(Conditions.element_to_be_clickable(
-        (By.XPATH, '//*[@id="email"]')))
-    email = driver.find_element(by=By.XPATH, value='//*[@id="email"]')
-
-    # Password Input
-    wait.until(Conditions.element_to_be_clickable(
-        (By.XPATH, '//*[@id="password"]')))
-    password = driver.find_element(by=By.XPATH, value="//*[@id='password']")
-
-    # Submit Button
-    submit = driver.find_element(
-        by=By.XPATH, value="//*[@id='__layout']/div/div[1]/div[2]/div[2]/div/form/div[4]/div[1]/button")
-
-    # Sending the credentials, keeping it static for the sake of simplicity
-    email.send_keys("dave.harsiddh.44@gmail.com")
-    password.send_keys("harsiddhdave44")
-    submit.click()
-    time.sleep(10)
-
-
 def CheckVideoVisibility():
+    driver.get("https://get.interviewready.io/course-preview/")
+
     # Waiting for the 'Course Preview' link to be visible, and clicking on it
     wait.until(Conditions.element_to_be_clickable(
         (By.XPATH, "//*[@id='__layout']/div/header/div/div/div[2]/a[2]")))
@@ -50,10 +25,9 @@ def CheckVideoVisibility():
 
     # Scrolling to the next page and fetching the vimeo player iframe
     driver.find_element(By.TAG_NAME, "body").send_keys(Keys.PAGE_DOWN)
-    wait.until(Conditions.element_to_be_clickable(
-        (By.XPATH, "//*[@id='vimeo-player-2']/iframe")))
+    driver.implicitly_wait(5)
     vimeo_player = driver.find_element(
-        by=By.XPATH, value="//*[@id='vimeo-player-2']/iframe")
+        by=By.XPATH, value="//*[@id='vimeo-player-1']/iframe")
 
     # Getting the video player dimensions to check if they're right
     player_width = vimeo_player.get_attribute("width")
@@ -66,6 +40,4 @@ def CheckVideoVisibility():
         print("Element does not have right dimensions or is not visible")
 
 
-# Function calls
-login()
 CheckVideoVisibility()
